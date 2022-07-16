@@ -9,24 +9,34 @@ package com.ljh.hellospring.test.bean;
  */
 public class UserService {
 
-    private String name;
+    private String uId;
 
-    public UserService(String name) {
-        this.name = name;
-    }
-
-    public UserService() {
-
-    }
+    private UserDao userDao;
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息：" + name);
+        System.out.println("查询用户信息：" + userDao.queryUserName(uId));
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("");
-        sb.append("").append(name);
+        sb.append("").append(userDao.queryUserName(uId));
         return sb.toString();
     }
 }
