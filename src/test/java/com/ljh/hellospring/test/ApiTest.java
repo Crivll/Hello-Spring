@@ -91,7 +91,7 @@ public class ApiTest {
 
         // 3. UserService 设置属性[uId、userDao]
         PropertyValues propertyValues = new PropertyValues();
-        propertyValues.addPropertyValue(new PropertyValue("uId", "10001"));
+        propertyValues.addPropertyValue(new PropertyValue("uId", "10003"));
         propertyValues.addPropertyValue(new PropertyValue("userDao",new BeanReference("userDao")));
 
         // 4. UserService 注入bean
