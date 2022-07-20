@@ -34,7 +34,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 给bean填充属性
             applyPropertyValues(beanName, bean, beanDefinition);
             // 执行Bean初始化方法和BeanPostProcessor的前置后置处理方法
-            bean
+            bean = initializeBean(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
