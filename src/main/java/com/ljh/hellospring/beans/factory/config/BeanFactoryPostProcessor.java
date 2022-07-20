@@ -5,7 +5,7 @@ import com.ljh.hellospring.beans.factory.ConfigurableListableBeanFactory;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: Bean修改处理接口
+ * Description: 修改BeanFactory处理接口
  *
  * Allows for custom modification of an application context's bean definitions,
  * adapting the bean property values of the context's underlying bean factory.

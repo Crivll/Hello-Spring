@@ -4,7 +4,7 @@ import com.ljh.hellospring.beans.BeansException;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: Bean扩展处理接口
+ * Description: Bean修改扩展处理接口
  *
  * Factory hook that allows for custom modification of new bean instances,
  * e.g. checking for marker interfaces or wrapping them with proxies.
