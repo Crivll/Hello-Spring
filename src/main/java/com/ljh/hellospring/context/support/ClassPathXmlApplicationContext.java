@@ -38,6 +38,6 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 
     @Override
     protected String[] getConfigLocations() {
-        return new String[0];
+        return configLocations;
     }
 }
