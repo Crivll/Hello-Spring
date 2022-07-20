@@ -3,6 +3,7 @@ package com.ljh.hellospring.beans.factory.support;
 import com.ljh.hellospring.beans.BeansException;
 import com.ljh.hellospring.beans.factory.ConfigurableListableBeanFactory;
 import com.ljh.hellospring.beans.factory.config.BeanDefinition;
+import com.ljh.hellospring.beans.factory.config.BeanPostProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             throw new BeansException("No bean named '" + beanName + "' is defined");
         }
         return beanDefinition;
+    }
+
+    @Override
+    public void preInstantiateSingletons() throws BeansException {
+        beanDefinitionMap.keySet().forEach(this::getBean);
     }
 
     @Override
@@ -55,4 +61,5 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(beanName, beanDefinition);
     }
+
 }

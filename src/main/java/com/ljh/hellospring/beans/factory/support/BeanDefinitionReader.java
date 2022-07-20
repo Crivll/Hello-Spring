@@ -45,4 +45,6 @@ public interface BeanDefinitionReader {
      * @throws BeansException
      */
     void loadBeanDefinitions(String location) throws BeansException;
+
+    void loadBeanDefinitions(String... locations) throws BeansException;
 }

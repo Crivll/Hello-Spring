@@ -3,6 +3,7 @@ package com.ljh.hellospring.beans.factory;
 import com.ljh.hellospring.beans.BeansException;
 import com.ljh.hellospring.beans.factory.config.AutowireCapableBeanFactory;
 import com.ljh.hellospring.beans.factory.config.BeanDefinition;
+import com.ljh.hellospring.beans.factory.config.BeanPostProcessor;
 import com.ljh.hellospring.beans.factory.config.ConfigurableBeanFactory;
 
 /**
@@ -19,5 +20,10 @@ import com.ljh.hellospring.beans.factory.config.ConfigurableBeanFactory;
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
     BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+
+    void preInstantiateSingletons() throws BeansException;
+
+    @Override
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 
 }
