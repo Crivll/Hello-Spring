@@ -1,5 +1,8 @@
 package com.ljh.hellospring.test.bean;
 
+import com.ljh.hellospring.beans.factory.DisposableBean;
+import com.ljh.hellospring.beans.factory.InitializingBean;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -7,7 +10,7 @@ package com.ljh.hellospring.test.bean;
  * @Author: ljh
  * DateTime: 2022-07-16 19:32
  */
-public class UserService {
+public class UserService implements InitializingBean, DisposableBean {
 
     private String uId;
     private String company;
@@ -56,5 +59,15 @@ public class UserService {
         final StringBuilder sb = new StringBuilder("");
         sb.append("").append(userDao.queryUserName(uId));
         return sb.toString();
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("执行：UserService.destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("执行；UserService.afterPropertiesSet");
     }
 }
