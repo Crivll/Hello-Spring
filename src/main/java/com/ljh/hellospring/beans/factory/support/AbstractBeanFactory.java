@@ -5,6 +5,7 @@ import com.ljh.hellospring.beans.factory.BeanFactory;
 import com.ljh.hellospring.beans.factory.config.BeanDefinition;
 import com.ljh.hellospring.beans.factory.config.BeanPostProcessor;
 import com.ljh.hellospring.beans.factory.config.ConfigurableBeanFactory;
+import com.ljh.hellospring.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,11 @@ import java.util.List;
  * DateTime: 2022-07-14 22:41
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    /**
+     * ClassLoader to resolve bean class names with, if necessary
+     */
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     /**
      * BeanPostProcessors to apply in createBean
@@ -66,6 +72,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
      */
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
     }
 
 
