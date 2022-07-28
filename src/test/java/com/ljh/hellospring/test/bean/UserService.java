@@ -12,19 +12,16 @@ import com.ljh.hellospring.context.ApplicationContextAware;
  * @Author: ljh
  * DateTime: 2022-07-16 19:32
  */
-public class UserService implements InitializingBean, DisposableBean, BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware {
-
-    private ApplicationContext applicationContext;
-    private BeanFactory beanFactory;
+public class UserService {
 
     private String uId;
     private String company;
     private String location;
 
-    private UserDao userDao;
+    private IUserDao userDao;
 
     public String queryUserInfo() {
-        return userDao.queryUserName(uId) + "，公司：" + company + "，地点" + location;
+        return userDao.queryUserName(uId) + "," + company + "," + location;
     }
 
     public String getuId() {
@@ -33,14 +30,6 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
 
     public void setuId(String uId) {
         this.uId = uId;
-    }
-
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
     }
 
     public String getCompany() {
@@ -59,48 +48,12 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
         this.location = location;
     }
 
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
+    public IUserDao getUserDao() {
+        return userDao;
     }
 
-    public BeanFactory getBeanFactory() {
-        return beanFactory;
+    public void setUserDao(IUserDao userDao) {
+        this.userDao = userDao;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("");
-        sb.append("").append(userDao.queryUserName(uId));
-        return sb.toString();
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("执行：UserService.destroy");
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("执行；UserService.afterPropertiesSet");
-    }
-
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-        System.out.println("ClassLoader：" + classLoader);
-    }
-
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
-    }
-
-    @Override
-    public void setBeanName(String name) {
-        System.out.println("Bean Name is：" + name);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }

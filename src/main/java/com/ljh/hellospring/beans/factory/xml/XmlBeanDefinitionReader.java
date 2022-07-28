@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: Xml类定义解析器
  *
  * @Author: ljh
  * DateTime: 2022-07-17 20:41
@@ -90,6 +90,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             // 增加对init-method、destroy-method的读取
             String initMethod = bean.getAttribute("init-method");
             String destroyMethodName = bean.getAttribute("destroy-method");
+            // 解析bean作用域
+            String beanScope = bean.getAttribute("scope");
 
             // 获取Class，方便获取类中的名称
             Class<?> clazz = Class.forName(className);
@@ -105,6 +107,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             // 额外设置到beanDefinition中
             beanDefinition.setInitMethodName(initMethod);
             beanDefinition.setDestroyMethodName(destroyMethodName);
+
+            if (StrUtil.isNotEmpty(beanScope)) {
+                beanDefinition.setScope(beanScope);
+            }
 
             // 获取属性并填充
             for (int j = 0; j < bean.getChildNodes().getLength(); j++) {
