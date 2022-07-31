@@ -5,8 +5,10 @@ import com.ljh.hellospring.beans.factory.BeanFactory;
 import com.ljh.hellospring.beans.factory.BeanFactoryAware;
 import com.ljh.hellospring.context.ApplicationEvent;
 import com.ljh.hellospring.context.ApplicationListener;
-import org.openjdk.jol.util.ClassUtils;
+import com.ljh.hellospring.util.ClassUtils;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -60,6 +62,20 @@ public abstract class AbstractApplicationEventMulticaster implements Application
         Class<? extends ApplicationListener> listenerClass = applicationListener.getClass();
 
         // 按照 CglibSubclassingInstantiateStrategy、SimpleInstantiateStrategy 不同的实例化策略，需要判断后获取目标class
-        // todo 完善逻辑
+        Class<?> targetClass = ClassUtils.isCglibProxyClass(listenerClass) ? listenerClass.getSuperclass() : listenerClass;
+        Type genericInterface = targetClass.getGenericInterfaces()[0];
+
+        Type actualTypeArgument = ((ParameterizedType) genericInterface).getActualTypeArguments()[0];
+        String className = actualTypeArgument.getTypeName();
+        Class<?> eventClassName;
+        try {
+            eventClassName = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new BeansException("Wrong event class name: " + className);
+        }
+        // 判定此eventClassName 对象所表示的接口或类与指定的event.getClass() 参数所表示的类或接口是否相同，或是否是其他类或超接口
+        // isAssignableFrom 是用来判断子类和父类的关系的，或者接口的实现类和接口的关系，默认所有的类的终极父类都是Object
+        // 如果A.isAssignableFrom(B)结果是true，证明B可以转换成为A,也就是A可以由B转换而来。
+        return eventClassName.isAssignableFrom(event.getClass());
     }
 }

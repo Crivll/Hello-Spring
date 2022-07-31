@@ -7,6 +7,7 @@ import com.ljh.hellospring.core.io.DefaultResourceLoader;
 import com.ljh.hellospring.test.bean.UserService;
 import com.ljh.hellospring.test.common.MyBeanFactoryPostProcessor;
 import com.ljh.hellospring.test.common.MyBeanPostProcessor;
+import com.ljh.hellospring.test.event.CustomEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
@@ -50,5 +51,13 @@ public class ApiTest {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         System.out.println("测试结果：" + userService.queryUserInfo());
 
+    }
+
+    @Test
+    public void test_event() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        applicationContext.publishEvent(new CustomEvent(applicationContext, 1019129009086763L, "success!"));
+
+        applicationContext.registerShutdownHook();
     }
 }
