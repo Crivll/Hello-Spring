@@ -1,5 +1,6 @@
 package com.ljh.hellospring.test;
 
+import com.ljh.hellospring.aop.aspectj.AspectJExpressionPointcut;
 import com.ljh.hellospring.beans.factory.support.DefaultListableBeanFactory;
 import com.ljh.hellospring.beans.factory.xml.XmlBeanDefinitionReader;
 import com.ljh.hellospring.context.support.ClassPathXmlApplicationContext;
@@ -11,6 +12,8 @@ import com.ljh.hellospring.test.event.CustomEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
+
+import java.lang.reflect.Method;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,5 +62,15 @@ public class ApiTest {
         applicationContext.publishEvent(new CustomEvent(applicationContext, 1019129009086763L, "success!"));
 
         applicationContext.registerShutdownHook();
+    }
+
+    @Test
+    public void test_aop() throws NoSuchMethodException {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* com.ljh.hellospring.test.bean.UserService.*(..))");
+        Class<UserService> clazz = UserService.class;
+        Method method = clazz.getDeclaredMethod("queryUserInfo");
+
+        System.out.println(pointcut.matches(clazz));
+        System.out.println(pointcut.matches(method, clazz));
     }
 }
