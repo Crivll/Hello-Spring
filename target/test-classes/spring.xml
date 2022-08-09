@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 
-    <bean id="userService" class="com.ljh.hellospring.test.bean.UserService" scope="prototype">
-        <property name="uId" value="10001"/>
-        <property name="userDao" ref="proxyUserDao"/>
-        <property name="company" value="腾讯"/>
-        <property name="location" value="深圳"/>
+    <bean id="userService" class="com.ljh.hellospring.test.bean.UserService"/>
+
+    <bean class="com.ljh.hellospring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+    <bean id="beforeAdvice" class="com.ljh.hellospring.test.bean.UserServiceBeforeAdvice"/>
+
+    <bean id="methodInterceptor" class="com.ljh.hellospring.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
     </bean>
 
-    <bean id="proxyUserDao" class="com.ljh.hellospring.test.bean.ProxyBeanFactory"/>
-
-    <bean class="com.ljh.hellospring.test.event.ContextRefreshedEventListener"/>
-
-    <bean class="com.ljh.hellospring.test.event.CustomEventListener"/>
-
-    <bean class="com.ljh.hellospring.test.event.ContextClosedEventListener"/>
+    <bean id="pointcutAdvisor" class="com.ljh.hellospring.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* com.ljh.hellospring.test.bean.IUserService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
 
 
 </beans>

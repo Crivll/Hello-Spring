@@ -78,24 +78,44 @@ public class ApiTest {
 //        System.out.println(pointcut.matches(method, clazz));
 //    }
 
-    @Test
-    public void test_dynamic() {
-        IUserService userService = new UserService();
+//    @Test
+//    public void test_dynamic() {
+//        IUserService userService = new UserService();
+//
+//        // 组装代理信息
+//        AdvisedSupport advisedSupport = new AdvisedSupport();
+//        advisedSupport.setTargetSource(new TargetSource(userService));
+//        advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
+//        advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* com.ljh.hellospring.test.bean.IUserService.*(..))"));
+//
+//        // 代理对象(JdkDynamicAopProxy)
+//        IUserService proxy_jdk = (IUserService) new JdkDynamicAopProxy(advisedSupport).getProxy();
+//        // 测试调用
+//        System.out.println("jdk测试结果: " + proxy_jdk.queryUserInfo());
+//
+//        // 代理对象(Cglib2AopProxy)
+//        IUserService proxy_cglib = (IUserService) new Cglib2AopProxy(advisedSupport).getProxy();
+//        // 测试调用
+//        System.out.println("cglib测试结果: " + proxy_cglib.queryUserInfo());
+//    }
 
+    private AdvisedSupport advisedSupport;
+
+    @Before
+    public void init() {
+        // 目标对象
+        IUserService userService = new UserService();
         // 组装代理信息
-        AdvisedSupport advisedSupport = new AdvisedSupport();
+        advisedSupport = new AdvisedSupport();
         advisedSupport.setTargetSource(new TargetSource(userService));
         advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
         advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* com.ljh.hellospring.test.bean.IUserService.*(..))"));
+    }
 
-        // 代理对象(JdkDynamicAopProxy)
-        IUserService proxy_jdk = (IUserService) new JdkDynamicAopProxy(advisedSupport).getProxy();
-        // 测试调用
-        System.out.println("jdk测试结果: " + proxy_jdk.queryUserInfo());
-
-        // 代理对象(Cglib2AopProxy)
-        IUserService proxy_cglib = (IUserService) new Cglib2AopProxy(advisedSupport).getProxy();
-        // 测试调用
-        System.out.println("cglib测试结果: " + proxy_cglib.queryUserInfo());
+    @Test
+    public void test_aop() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        System.out.println("测试结果：" + userService.queryUserInfo());
     }
 }
